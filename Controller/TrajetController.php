@@ -22,7 +22,7 @@ class TrajetController{
 
     //Suppression trajet
     public function deleteTrajet($id){
-         $sql="DELETE trajet WHERE id=:id";
+         $sql="DELETE FROM trajet WHERE id=:id";
          $db=Config::Connexion();
         
          try {
@@ -42,10 +42,10 @@ class TrajetController{
         a1.city_name as start_city,
         a2.city_name as end_city
         FROM trajet t
-        JOIN agence a1. ON t.start_agency_id=a1.id
-        JOIN agence a2. ON t.end_agency_id=a2.id
+        JOIN agence a1 ON t.start_agency_id=a1.id
+        JOIN agence a2 ON t.end_agency_id=a2.id
         WHERE t.available_seat>0
-        WHERE t.departure_date>Now()
+        AND t.departure_date>NOW()
         ORDER BY t.departure_date ASC";
         $db=Config::Connexion();
 
@@ -90,7 +90,6 @@ class TrajetController{
         }
     }
 
-
     //Création d'un trajet
     public function createTrajet($trajet){     
         $errors=$this->validateTrajet($trajet);
@@ -107,7 +106,7 @@ class TrajetController{
         try {
             $query=$db->prepare($sql);
             $query->execute([
-                'start_agency-id'=>$trajet->getStartAgencyId(),
+                'start_agency_id'=>$trajet->getStartAgencyId(),
                 'end_agency_id'=>$trajet->getEndAgencyId(),
                 'departure_date'=>$trajet->getDepartureDate(),
                 'arrival_date'=>$trajet->getArrivalDate(),
@@ -115,44 +114,54 @@ class TrajetController{
                 'available_seat'=>$trajet->getAvailableSeat(),
                 'person_contact_id'=>$trajet->getPersonContactId()
             ]);
+            return['success'=>true, 'errors'=>'Trajet créé avec succès'];
         
         } catch (PDOException $e) {
             echo "Erreur".$e->getMessage();
         }
+    }
 
     
         //Valider le trajet
         public function validateTrajet($trajet){
             $errors=[];
             if ($trajet->getStartAgencyId()==$trajet->getEngAgencyId()){
-                $errors[]="L'agence de départ ne eut pas être le même que l'agence d'arrivée"};
+                $errors[]="L'agence de départ ne eut pas être le même que l'agence d'arrivée";
+            }
 
             if (strtotime($trajet->getDepartureDate())>=strtotime($trajet->getArrivalDate())){
-                $errors[]="Il est impossible d'arriver avant d'être parti"};
+                $errors[]="Il est impossible d'arriver avant d'être parti";
+            }
 
             if ($trajet->getAvailableSeat()>$trajet->getTotalSeat()){
-                $errors[]="Il est impossible d'avoir plus de place libre que de place totale"};
+                $errors[]="Il est impossible d'avoir plus de place libre que de place totale";
+            }
             
             if ($trajet->getTotalSeat()<0){
-                $errors[]="Le nombre de places ne peut pas être négatif"};
+                $errors[]="Le nombre de places ne peut pas être négatif";
+            }
         
         return $errors;
         }
 
-    }
-
         
     //Modification trajet
     public function updateTrajet($trajet, $id){
+
+        //Validation
+        $errors=$this->validateTrajet($trajet);
+          if(!empty($errors)){
+            return ['succes'=>false, 'errors'=>$errors];
+        }
         $sql = "UPDATE trajets SET 
-                    start_agency_id = :start_agency_id,
-                    end_agency_id = :end_agency_id,
-                    departure_date = :departure_date,
-                    arrival_date = :arrival_date,
-                    total_seat = :total_seat,
-                    available_seat = :available_seat,
-                    person_contact_id = :person_contact_id
-                WHERE id = :id";
+                    start_agency_id=:start_agency_id,
+                    end_agency_id=:end_agency_id,
+                    departure_date=:departure_date,
+                    arrival_date=:arrival_date,
+                    total_seat=:total_seat,
+                    available_seat=:available_seat,
+                    person_contact_id=:person_contact_id
+                WHERE id=:id";
 
         $db = Config::Connexion();
 
@@ -160,17 +169,47 @@ class TrajetController{
             $query = $db->prepare($sql);
             $query->execute([
                 'id' => $id,
-                'start_agency_id' => $trajet->getStartAgencyId(),
-                'end_agency_id' => $trajet->getEndAgencyId(),
-                'departure_date' => $trajet->getDepartureDate(),
-                'arrival_date' => $trajet->getArrivalDate(),
-                'total_seat' => $trajet->getTotalSeat(),
-                'available_seat' => $trajet->getAvailableSeat(),
-                'person_contact_id' => $trajet->getPersonContactId()
+                'start_agency_id'=>$trajet->getStartAgencyId(),
+                'end_agency_id'=>$trajet->getEndAgencyId(),
+                'departure_date'=>$trajet->getDepartureDate(),
+                'arrival_date'=>$trajet->getArrivalDate(),
+                'total_seat'=> $trajet->getTotalSeat(),
+                'available_seat'=>$trajet->getAvailableSeat(),
+                'person_contact_id'=>$trajet->getPersonContactId()
             ]);
+            return ['success'=>'true']
             
         } catch (PDOException $e) {
-            echo "Erreur : " . $e->getMessage();
+            echo "Erreur".$e->getMessage();
+        }
+    }
+
+    //Verification utilisateur = auteur du trajet
+    public function isAuthor($idUser,$idTrajet){
+        $sql="SELECT COUNT(*) FROM trajets 
+        WHERE id=:idTrajet AND person_contact_id=:idUser";
+        $db=Config::Connexion();
+    
+        try{
+            $query=$db->prepare($sql);
+            $query->execute([
+                'idTrajet'=>$idTrajet,
+                'idUser'=>$idUser
+
+            ]);
+        return $query->fetchColumn()>0;
+
+        } catch(PDOException $e){
+        echo "Erreur".$e->getMessage();
+        }
+    }
+
+    //Modification du trajet de l'utilisateur
+    public function updateUserTrajet($trajet,$idUser,$idTrajet){
+        if(!$this->isAuthor($idUser,$idTrajet)){
+            return ["success"=>false,'errors'=>["Vous n'etes pas l'auteur du trajet"]];
+        }else{
+        return $this->updateTrajet($trajet,$idTrajet);
         }
     }
 
@@ -180,12 +219,14 @@ class TrajetController{
 $trajetController = new TrajetController();
 $trajet= new Trajet();
 
+//Appel de fonction:
+
 //Afficher les trajets
 $liste=$trajetController->getAllTrajet();
 print_r($liste);
 
 //Supprimer trajet
-$trajetController->deleteAgence(iddelagencesouhaité);
+$trajetController->deleteTrajet(iddelagencesouhaité);
 
 //Trajets disponible par ordre croissant 
 $liste=$trajetController->getDisponibleTrajet();
@@ -203,7 +244,15 @@ $trajet->setArrivalDate();
 $trajet->setTotalSeat();
 $trajet->setAvailableSeat();
 $trajet->setPersonContactId();
-$trajetController->createTrajet($trajet);
+$result=$trajetController->createTrajet($trajet);
+if($result['success']){
+    echo 'Trajet créé avec succèes'
+}
+else{
+    echo"Erreur";
+    foreach ($result['errors'] as $error){
+        echo $error;
+    }
 }
 
 //Modification d'un trajet
@@ -214,6 +263,35 @@ $trajet->setArrivalDate();
 $trajet->setTotalSeat();
 $trajet->setAvailableSeat();
 $trajet->setPersonContactId();
-$trajetController->updateTrajet($trajet, numeroidsouhaité);
+$result=$trajetController->updateTrajet($trajet, numeroidsouhaité);
+if($result['success']){
+    echo 'Trajet modifié avec succèes'
+}
+else{
+    echo"Erreur";
+    foreach ($result['errors'] as $error){
+        echo $error;
+    }
+}
+
+//Verification utilisateur = auteur du trajet
+$author=$trajetController->isAuthor($idUser,$idTrajet);
+echo $author?"Oui":"Non";
+
+
+//Modification du trajet de l'utilisateur
+$result2=$trajetController->updateUserTrajet($trajet,idusersouhaité,idtrajetsouhaité);
+    if($result2['success']){
+        echo 'Trajet modifé';
+
+    }else{
+        echo "Erreur";
+        foreach($result2['errors'] as $error){
+            echo $error;
+        }
+    }
+
+
+}
 
 ?>
