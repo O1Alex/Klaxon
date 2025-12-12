@@ -177,8 +177,9 @@ class TrajetController{
                 'available_seat'=>$trajet->getAvailableSeat(),
                 'person_contact_id'=>$trajet->getPersonContactId()
             ]);
+
             return ['success'=>'true']
-            
+        
         } catch (PDOException $e) {
             echo "Erreur".$e->getMessage();
         }
@@ -210,6 +211,16 @@ class TrajetController{
             return ["success"=>false,'errors'=>["Vous n'etes pas l'auteur du trajet"]];
         }else{
         return $this->updateTrajet($trajet,$idTrajet);
+        }
+    }
+
+    //Suppression du trajet de l'utilisateur
+    public function deleteUserTrajet($trajetId,$UserId){
+        if(!$this->isAuthor($trajetId,$UserId)){
+            return ["success"=>false,'errors'=>["Vous n'etes pas l'auteur du trajet"]];
+        }else{
+        $this->deleteTrajet($trajetId);
+        return['success'=>true, 'message'=>['Traet supprimé avec succès']]
         }
     }
 
@@ -294,4 +305,15 @@ $result2=$trajetController->updateUserTrajet($trajet,idusersouhaité,idtrajetsou
 
 }
 
+//Suppression du trajet de l'utilisateur
+$result3=$trajetController->deleteTrajet($trajetId,$UserId);
+if($result3['success']){
+    echo "Trajet supprimé"
+}
+else{
+    echo "Erreur"
+    foreach($result3 ['errors'] as $error){
+        echo $error;
+    }
+}
 ?>
