@@ -56,37 +56,37 @@ class UserController{
     }
 
 
-//Instance
-$userController= new UserController();
+// //Instance
+// $userController= new UserController();
 
-//Appel de fonctions:
+// //Appel de fonctions:
 
-//Afficher utilisateurs
-$liste=$userController->getUser();
-print_r($liste);
+// //Afficher utilisateurs
+// $liste=$userController->getUser();
+// print_r($liste);
 
-//Connexion
-$result=$userController->Connexion('emailutilisateur','mpd');
-    if($result){
-        echo "Connecté";
-    }
-    else{
-        echo "Echec";
-    }
+// //Connexion
+// $result=$userController->Connexion('emailutilisateur','mpd');
+//     if($result){
+//         echo "Connecté";
+//     }
+//     else{
+//         echo "Echec";
+//     }
 
-//Deconnexion
-$deconnexion=$userController->Deconnexion();
-    if($deconnexion){
-        echo "déconnecter";
-    }
-    else {
-        echo "Echec";
-    }
+// //Deconnexion
+// $deconnexion=$userController->Deconnexion();
+//     if($deconnexion){
+//         echo "déconnecter";
+//     }
+//     else {
+//         echo "Echec";
+//     }
 
-//Affichage nom de l'utilisateur
-if(isset($_SESSION['user_id'])){
-    echo $_SESSION['user_name'];
-}
+// //Affichage nom de l'utilisateur
+// if(isset($_SESSION['user_id'])){
+//     echo $_SESSION['user_name'];
+// }
 
 }
 ?>
