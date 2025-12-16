@@ -1,8 +1,7 @@
 <?php
-
 session_start();
-
 ?>
+
 <header>
 
 <!-- Header à gauche -->
@@ -42,11 +41,12 @@ session_start();
              <button><a href="Deconnexion.php">Deconnexion</button>
             </div>
                  <?php }?>
-                    <!-- Utilisation non connecté -->
-
-        <?php }else{?>
-            <form action="Connexion.php">
-                <button type="submit">Formulaire de Connexion</button>
-            </form> <?php }?>
+            
+            <!-- Utilisation non connecté -->
+            <?php }else{?>
+                <form action="Connexion.php">
+                    <button type="submit">Formulaire de Connexion</button>
+                </form> 
+            <?php }?>
     </div>
 </header>

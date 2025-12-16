@@ -1,8 +1,3 @@
-
-Ameni Hajri
-ven. 5 déc. 16:52 (il y a 4 jours)
-À moi
-
 <?php
 
 class Config {
