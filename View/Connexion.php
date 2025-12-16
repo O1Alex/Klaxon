@@ -8,7 +8,7 @@ $userController = new UserController();
 $error='';
 if($_SERVER['REQUEST_METHOD']=== 'POST'){
     if($userController->Connexion($_POST["email"], $_POST["password"])){
-        header('Location:index.php');
+        header('Location:header.php');
         exit;
     } 
     else{
@@ -33,7 +33,7 @@ if($_SERVER['REQUEST_METHOD']=== 'POST'){
         <p style="color:red"><?php $error ?> </p>
         <?php }; ?>
 
-    <form method>
+    <form method="POST">
         <div>
             <label>Email</label>
             <input type="email" name="email"></input>

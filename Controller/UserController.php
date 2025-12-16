@@ -1,11 +1,11 @@
 <?php
-require '../Config/database.php'
+require '../Config/database.php';
 
 class UserController{
 
     //Liste des utilisateurs avec certaines données
     public function getUser(){
-        $sql="SELECT id, firt_name, last_name, email, phone, role FROM user";
+        $sql="SELECT id, first_name, last_name, email, phone, role FROM users";
         $db=Config::Connexion();
 
         try {

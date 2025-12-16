@@ -38,7 +38,7 @@ session_start();
                 <form style="display:inline" action="create_trajet.php">
                     <button  type="submit">Proposer un trajet</button>
             </form>
-            <span ><?php $_SESSION['user_name'] ?></span>               <!--A controler-->
+            <span ><?php echo $_SESSION['user_name'] ?></span>               
              <button><a href="Deconnexion.php">Deconnexion</button>
             </div>
                  <?php }?>

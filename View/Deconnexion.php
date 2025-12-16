@@ -1,6 +1,7 @@
 <?php
 
-require "../Controller/UserController";
+require_once "../Controller/UserController.php";
+
 
 $userController=new UserController();
 $userController->Deconnexion();

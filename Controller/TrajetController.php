@@ -6,7 +6,7 @@ class TrajetController{
 
     //Liste des trajets
     public function getAllTrajet(){
-        $sql="SELECT * FROM trajet";
+        $sql="SELECT * FROM trajets";
         $db=Config::Connexion();
 
         try {
@@ -22,7 +22,7 @@ class TrajetController{
 
     //Suppression trajet
     public function deleteTrajet($id){
-         $sql="DELETE FROM trajet WHERE id=:id";
+         $sql="DELETE FROM trajets WHERE id=:id";
          $db=Config::Connexion();
         
          try {
@@ -41,7 +41,7 @@ class TrajetController{
         $sql="SELECT t.*,
         a1.city_name as start_city,
         a2.city_name as end_city
-        FROM trajet t
+        FROM trajets t
         JOIN agence a1 ON t.start_agency_id=a1.id
         JOIN agence a2 ON t.end_agency_id=a2.id
         WHERE t.available_seat>0
@@ -69,7 +69,7 @@ class TrajetController{
         u.last_name,
         u.email,
         u.phone
-        FROM trajet t
+        FROM trajets t
         JOIN agence a1. ON t.start_agency_id=a1.id
         JOIN agence a2. ON t.end_agency_id=a2.id
         JOIN user u ON t.personn_contac_id=u.id,
@@ -97,7 +97,7 @@ class TrajetController{
             return ['succes'=>false, 'errors'=>$errors];
         }
 
-        $sql="INSERT INTO trajet ( start_agency-id, end_agency_id, departure_date, 
+        $sql="INSERT INTO trajets ( start_agency-id, end_agency_id, departure_date, 
         arrival_date, total_seat, available_seat, person_contact_id ) 
         VALUES (:start_agency-id, :end_agency_id, :departure_date, :arrival_date, 
         :total_seat, :available_seat,:person_contact_id)"; 

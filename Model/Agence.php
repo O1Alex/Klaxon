@@ -5,20 +5,20 @@ class Agence{
     private $cityName;
 
     //id
-    public fonction getId(){
+    public function getId(){
         return $this ->id;
     }
 
-    public fonction setId($id){
+    public function setId($id){
         $this->id=$id;
     }
 
     //cityName
-    public fonction getCityName(){
+    public function getCityName(){
         return $this ->cityName;
     }
 
-    public fonction setCityName($cityName){
+    public function setCityName($cityName){
         $this->cityName=$cityName;
     }
 }
