@@ -8,7 +8,7 @@ $userController = new UserController();
 $error='';
 if($_SERVER['REQUEST_METHOD']=== 'POST'){
     if($userController->Connexion($_POST["email"], $_POST["password"])){
-        header('Location:header.php');
+        header('Location:index.php');
         exit;
     } 
     else{
