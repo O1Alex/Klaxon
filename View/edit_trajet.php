@@ -108,14 +108,15 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
 
         <br>
         <label>Nombre total de places</label>
-        <input type="number" name="total_seats" min="1" value="<?php echo $trajetDetails['total_seat']?>" required>
+        <input type="number" name="total_seat" min="1" value="<?php echo $trajetDetails['total_seat']?>" required>
 
         <br>
         <label>Nombre de places disponibles</label>
-        <input type="number" name="available_seats" min="0" value="<?php echo $trajetDetails['available_seat']?>" required>
+        <input type="number" name="available_seat" min="0" value="<?php echo $trajetDetails['available_seat']?>" required>
 
         <br>
         <button type="submit"> Enregistrer les modifications</button>
         <a href="index.php"><button type="reset">Annuler </button></a>
+    </from>
 </body>
 </html>

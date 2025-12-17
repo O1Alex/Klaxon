@@ -1,6 +1,6 @@
 <?php
 
-require "../Controller/TrajetController.php";
+require_once "../Controller/TrajetController.php";
 
 $trajetController= new TrajetController();
 $trajets=$trajetController->getDisponibleTrajet();
@@ -45,14 +45,17 @@ $trajets=$trajetController->getDisponibleTrajet();
             <?php $isAuthor=$trajetController->isAuthor($_SESSION['user_id'],$trajet['id']) ?>
 
             <?php if ($isAuthor){?>
-            <td> <a href="edit_trajet.php?id=<?php echo $trajet['id']?>"><button>Modifier<button></a></td>
+
+            <td> <a href="edit_trajet.php?id=<?php echo $trajet['id']?>"><button>Modifier</button></a></td>
+            
             <td>
                 <form action="delete_trajet.php" method="POST">
                     <input type="hidden" name="trajet_id" value="<?php echo $trajet['id']?>">
                     <button type="submit" onclick="return confirm('supprimer?')">Supprimer</button>
                 </form>
             </td>
-            <?php }}}?>
+        <?php }}}?>
+
         </tr>
     </table>
 </body>
