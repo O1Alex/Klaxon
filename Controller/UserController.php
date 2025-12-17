@@ -1,5 +1,5 @@
 <?php
-require '../Config/database.php';
+require_once '../Config/database.php';
 
 class UserController{
 

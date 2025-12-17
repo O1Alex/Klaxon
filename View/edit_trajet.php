@@ -8,8 +8,8 @@ session_start();
 
 //vérifier si l'utilisateur est connecté 
 if(!isset($_SESSION['user_id'])){
-header('Location:Connexion.php');
-exit();
+    header('Location:Connexion.php');
+    exit();
 }
 
 $trajetController=new TrajetController();
@@ -86,8 +86,8 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
                 </option>
             <?php }?>
         </select>
-<br>
-
+        
+        <br>
         <label>Agence d'arrivé</label>
         <select name="end_agency_id" required>
             <?php foreach($agences as $agence){?>
@@ -97,8 +97,8 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
                 </option>
             <?php }?>         
         </select>
+        
         <br>
-
         <label> Date et heure de départ </label>
         <input type="datetime-local" name="departure_date" value="<?php echo date('Y-m-d\TH:i',strtotime($trajetDetails['departure_date']))?>" required>
 

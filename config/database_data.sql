@@ -12,9 +12,9 @@ INSERT INTO agence (city_name) VALUES
 ('Rennes'),
 ('Reims');
 
-INSERT INTO users (first_name, last_name, phone, email) VALUES
-('Martin', 'Alexandre', '0612345678', 'alexandre.martin@email.fr'),
-('Dubois', 'Sophie', '0698765432', 'sophie.dubois@email.fr'),
+INSERT INTO users (first_name, last_name, phone, email, password, role) VALUES
+('Martin', 'Alexandre', '0612345678', 'alexandre.martin@email.fr', 'admin123', 'admin'),
+('Dubois', 'Sophie', '0698765432', 'sophie.dubois@email.fr', 'user123'),
 ('Bernard', 'Julien', '0622446688', 'julien.bernard@email.fr'),
 ('Moreau', 'Camille', '0611223344', 'camille.moreau@email.fr'),
 ('Lefèvre','Lucie', '0777889900', 'lucie.lefevre@email.fr'),
